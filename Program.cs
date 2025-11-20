@@ -1,10 +1,13 @@
-﻿namespace Rouba_Monte
+﻿using System;
+using Rouba_Monte.Classes;
+
+namespace Rouba_Monte
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            // TODO: Implementar interação com usuário
         }
     }
 }
