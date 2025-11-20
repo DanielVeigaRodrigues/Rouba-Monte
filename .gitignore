@@ -1,0 +1,48 @@
+# Visual Studio
+.vs/
+[Dd]ebug/
+[Rr]elease/
+*.suo
+*.user
+*.ishost
+*.pdb
+*.opendb
+*.log
+*.filter.txt
+*.vshost.*
+*.testsettings
+*.trx
+*.rdc
+*.config.override.json
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Tt]emp/
+[Rr]esults/
+[Ll]ogs/
+[Aa]rtifacts/
+
+# IDE specific files
+.vscode/        # VS Code
+.idea/          # JetBrains Rider
+*.swp           # Vim
+
+# NuGet
+*.nuonator
+*.nupkg
+*.snupkg
+*.cache
+*.temp.json
+
+# Azure Functions
+local.settings.json
+
+# SQL Server Management Studio
+*.ssmssln
+
+# Other
+node_modules/
+
+# Ignore files already tracked by Git
+# Use "git rm --cached <file>" to untrack if already committed
