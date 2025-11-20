@@ -8,6 +8,11 @@ namespace Rouba_Monte
         static void Main(string[] args)
         {
             // TODO: Implementar interação com usuário
+            List<Jogador> jogadores = [new("Samuel"), new("Luisa")];
+            RoubaMonte jogo = new RoubaMonte(jogadores, 52);
+
+            jogo.Jogar();
+            Console.WriteLine(jogo.CartaDaVez);
         }
     }
 }

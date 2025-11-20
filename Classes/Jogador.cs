@@ -44,9 +44,13 @@ namespace Rouba_Monte.Classes
             Monte = new Stack<Carta>();
         }
 
-        public Carta OlharTopoDoMonte()
+        public Carta? OlharTopoDoMonte()
         {
-            return Monte.Peek();
+            if(Monte.Count > 0)
+            {
+                return Monte.Peek();
+            }
+            return null;
         }
     }
 }

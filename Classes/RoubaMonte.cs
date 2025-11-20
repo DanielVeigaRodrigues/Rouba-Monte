@@ -24,7 +24,7 @@ namespace Rouba_Monte.Classes
         public bool Finalizado { get; set; }
         #endregion
 
-        public RoubaMonte(List<Jogador> jogadores, int numCartas, List<Carta> cartas)
+        public RoubaMonte(List<Jogador> jogadores, int numCartas)
         {
             // TODO: Implementar uma lista duplamente encadeada para gerenciar as rodadas
             _jogadores = new LinkedList<Jogador>(jogadores);
@@ -32,7 +32,7 @@ namespace Rouba_Monte.Classes
 
             _cartas = new List<Carta>();
 
-            int numBaralhos = (int)Math.Ceiling(54.0 / numCartas);
+            int numBaralhos = (int)Math.Ceiling(52.0 / numCartas);
 
             for (int i = 0; i < numBaralhos; i++)
             {
@@ -88,10 +88,16 @@ namespace Rouba_Monte.Classes
             Finalizado = MonteDeCompra.Count == 0;
         }
 
+        public void Imprimir()
+        {
+            // TODO: Imprimir as cartas e os montes
+        }
+
         private Jogador ObjerJogadorAtual()
         {
             // TODO: Implementar corretamente
             return Jogadores.First();
         }
+
     }
 }
