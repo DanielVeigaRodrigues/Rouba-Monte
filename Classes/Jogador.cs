@@ -52,5 +52,17 @@ namespace Rouba_Monte.Classes
             }
             return null;
         }
+
+        internal void RoubarMonte(Jogador jogador)
+        {
+            Stack<Carta> aux = new Stack<Carta>();
+            while(jogador.Monte.Count > 0) {
+                aux.Push(jogador.Monte.Pop());
+            }
+            while (aux.Count > 0)
+            {
+                this.Monte.Push(aux.Pop());
+            }
+        }
     }
 }
