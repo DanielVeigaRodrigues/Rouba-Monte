@@ -48,6 +48,34 @@ namespace Rouba_Monte.Classes
             AreaDeDescarte = new List<Carta>();
         }
 
+        public void LerTecla()
+        {
+            ConsoleKeyInfo tecla = Console.ReadKey();
+            switch (tecla.Key)
+            {
+                // IMPLEMENTAR 
+            }
+        }
+
+        public void MostrarMenu()
+        {
+            if (TesteRoubarMontesJogador())
+            {
+                Console.ReadKey();
+                RoubarMontesJogador();
+            }
+            else if (TesteRoubarMonteAreaDeDescarte())
+            {
+                Console.ReadKey();
+                RoubarMonteAreaDeDescarte();
+            } 
+            else if (TesteRoubarCartaDaVez())
+            {
+                Console.ReadKey();
+                RoubarCartaDaVez();
+            }
+        }
+
         public void Jogar()
         {
             if (Finalizado)
@@ -56,36 +84,95 @@ namespace Rouba_Monte.Classes
             }
 
             CartaDaVez = MonteDeCompra.Pop();
-            JogadorAtual = ObjerJogadorAtual();
-            // TODO: Implementar jogada baseada no Jogador
+            JogadorAtual = ObterProximoJogador();
 
-            foreach (Jogador jogador in Jogadores)
+            RoubarMontesJogador();
+            RoubarMonteAreaDeDescarte();
+            RoubarCartaDaVez();
+
+            AreaDeDescarte.Add(CartaDaVez);
+            JogadorAtual = ObterProximoJogador();
+
+            Finalizado = MonteDeCompra.Count == 0;
+        }
+
+        private bool TesteRoubarCartaDaVez()
+        {
+            if (CartaDaVez.CompararCartas(JogadorAtual.OlharTopoDoMonte()))
             {
-                if(jogador != JogadorAtual)
-                {
-                    if (CartaDaVez.CompararCartas(jogador.OlharTopoDoMonte()))
-                    {
-                        // TODO: Implementar ação para roubar o monte
-                        // TODO: Checar se tem mais de um monte
-                    }
-                }
+                Console.WriteLine("A - Roubar carta da vez");
+                return true;
             }
+            return false;
+        }
 
+        private void RoubarCartaDaVez()
+        {
+            if (CartaDaVez.CompararCartas(JogadorAtual.OlharTopoDoMonte()))
+            {
+                JogadorAtual.Monte.Push(CartaDaVez);
+                return;
+            }
+        }
+
+        private bool TesteRoubarMonteAreaDeDescarte()
+        {
             foreach (Carta carta in AreaDeDescarte)
             {
                 if (carta.CompararCartas(CartaDaVez))
                 {
-                    // TODO: Implementar ação para remover
-                    // TODO: Checar se tem mais de um monte
+                    Console.WriteLine("W - Roubar cartas do monte de descarte");
+                    return true;
                 }
             }
+            return false;
+        }
 
-            if (CartaDaVez.CompararCartas(JogadorAtual.OlharTopoDoMonte()))
+        private void RoubarMonteAreaDeDescarte()
+        {
+            foreach (Carta carta in AreaDeDescarte)
             {
-                // TODO: Implementar ação 
+                if (carta.CompararCartas(CartaDaVez))
+                {
+                    AreaDeDescarte.Remove(carta);
+                    JogadorAtual.Monte.Push(carta);
+                    JogadorAtual.Monte.Push(CartaDaVez);
+                    return;
+                }
             }
+        }
 
-            Finalizado = MonteDeCompra.Count == 0;
+        private void RoubarMontesJogador()
+        {
+            foreach (Jogador jogador in Jogadores)
+            {
+                if (jogador != JogadorAtual)
+                {
+                    if (CartaDaVez.CompararCartas(jogador.OlharTopoDoMonte()))
+                    {
+                        JogadorAtual.RoubarMonte(jogador);
+                        return;
+                    }
+                }
+
+            }
+        }
+
+        private bool TesteRoubarMontesJogador()
+        {
+            foreach (Jogador jogador in Jogadores)
+            {
+                if (jogador != JogadorAtual)
+                {
+                    if (CartaDaVez.CompararCartas(jogador.OlharTopoDoMonte()))
+                    {
+                        Console.WriteLine($"D - Roubar monte de {jogador.Nome}");
+                        return true;
+                    }
+                }
+
+            }
+            return false;
         }
 
         public void Imprimir()
@@ -93,7 +180,7 @@ namespace Rouba_Monte.Classes
             // TODO: Imprimir as cartas e os montes
         }
 
-        private Jogador ObjerJogadorAtual()
+        private Jogador ObterProximoJogador()
         {
             // TODO: Implementar corretamente
             return Jogadores.First();
