@@ -45,11 +45,11 @@ namespace Rouba_Monte.Classes
                 _ => ""
             };
 
-            return "______"
+            return "_______"
                 + $"\n|{numTexto}{naipeTexto}|"
                 + $"\n| {naipeTexto} |"
                 + $"\n|{naipeTexto}{numTexto}|"
-                + "\n------\n";
+                + "\n-------\n";
         }
 
         public bool CompararCartas(Carta? carta)
