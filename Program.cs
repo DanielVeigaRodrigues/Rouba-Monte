@@ -7,15 +7,13 @@ namespace Rouba_Monte
     {
         static void Main(string[] args)
         {
-            // TODO: Implementar interação com usuário
-            List<Jogador> jogadores = [new("Samuel"), new("Rebeca"), new("Daniel"), new("Ana Paula")];
+            List<Jogador> jogadores = [new("Samuel"), new("Rebeca"), new("Daniel"), new("Ana Paula"), new("Jorge"), new("Luiz")];
             RoubaMonte jogo = new RoubaMonte(jogadores, 5 * 52);
 
             while (!jogo.Finalizado)
             {
                 jogo.Jogar();
             }
-            
         }
     }
 }
