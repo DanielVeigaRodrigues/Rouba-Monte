@@ -56,9 +56,12 @@ namespace Rouba_Monte.Classes
 
             if (Finalizado)
             {
-                Console.WriteLine("-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-");
-                Console.WriteLine(_jogadores.FirstOrDefault(jogador => jogador.Monte.Count == _jogadores.Max(p => p.Monte.Count)).Nome + " foi o vencedor!");
-                Console.WriteLine("-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-");
+                Jogador vencedor = _jogadores.FirstOrDefault(jogador => jogador.Monte.Count == _jogadores.Max(p => p.Monte.Count));
+                Console.WriteLine("\n-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-");
+                Console.WriteLine($"{vencedor.Nome} venceu o jogo!");
+                Console.WriteLine("-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-\n");
+
+                vencedor.QuantidadeCartas = vencedor.Monte.Count;
                 return;
             }
 
@@ -76,6 +79,8 @@ namespace Rouba_Monte.Classes
 
             AreaDeDescarte.Add(CartaDaVez);
             JogadorAtual = ObterProximoJogador();
+            Finalizado = MonteDeCompra.Count == 0;
+            Console.WriteLine($"É a vez de {JogadorAtual.Nome}");
         }
 
         private bool RoubarCartaDaVez()
@@ -83,6 +88,8 @@ namespace Rouba_Monte.Classes
             if (CartaDaVez.CompararCartas(JogadorAtual.OlharTopoDoMonte()))
             {
                 JogadorAtual.Monte.Push(CartaDaVez);
+                Console.WriteLine($"{JogadorAtual.Nome} rouba a carta da vez!");
+
                 return true;
             }
 
@@ -98,6 +105,8 @@ namespace Rouba_Monte.Classes
                     AreaDeDescarte.Remove(carta);
                     JogadorAtual.Monte.Push(carta);
                     JogadorAtual.Monte.Push(CartaDaVez);
+
+                    Console.WriteLine($"{JogadorAtual.Nome} rouba uma carta da área de descarte!");
                     return true;
                 }
             }
@@ -140,10 +149,10 @@ namespace Rouba_Monte.Classes
         public void Imprimir()
         {
             Console.WriteLine($"Vez de {JogadorAtual.Nome}");
-            Console.WriteLine("");
+            Console.WriteLine("\n");
             Console.WriteLine("Carta da vez:");
             Console.WriteLine(CartaDaVez);
-            Console.WriteLine("");
+            Console.WriteLine("\n");
             Console.WriteLine("Area de Descarte");
             foreach (Carta carta in AreaDeDescarte)
             {
@@ -151,10 +160,10 @@ namespace Rouba_Monte.Classes
             }
 
             Console.WriteLine("");
-            Console.WriteLine("Montes:");
+            Console.WriteLine("Montes:\n");
             foreach (Jogador jogador in _jogadores)
             {
-                Console.WriteLine($"Monte de {jogador.Nome}\n" + jogador.OlharTopoDoMonte() + (jogador.Monte.Count > 0 ? $" + {jogador.Monte.Count} cartas" : " 0 cartas"));
+                Console.WriteLine($"Monte de {jogador.Nome}\n" + jogador.OlharTopoDoMonte() + (jogador.Monte.Count > 0 ? $" + {jogador.Monte.Count} cartas" : " 0 cartas\n\n"));
             }
         }
 

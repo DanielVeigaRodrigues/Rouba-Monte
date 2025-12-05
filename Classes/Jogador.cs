@@ -63,6 +63,7 @@ namespace Rouba_Monte.Classes
             {
                 this.Monte.Push(aux.Pop());
             }
+            Console.WriteLine(this.Nome + " rouba o monte de " + jogador.Nome);
         }
     }
 }
