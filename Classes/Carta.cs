@@ -24,32 +24,65 @@ namespace Rouba_Monte.Classes
             _naipe = naipe;
         }
 
-        public override string ToString()
+        public Carta()
         {
+            _numero = -1;
+            _naipe = NaipeEnum.Paus;
+        }
+
+        public string Nome()
+        {
+
             string numTexto = _numero switch
             {
-                1 => "A ",
-                10 => "10",
-                11 => "Q ",
-                12 => "J ",
-                13 => "K ",
-                _ => _numero.ToString() + " ",
+                1 => "Ás",
+                10 => "Dez",
+                11 => "Rainha",
+                12 => "Valete",
+                13 => "Rei",
+                _ => _numero.ToString(),
             };
 
-            string naipeTexto = _naipe switch
+            return $"{numTexto} de {_naipe}";
+        }
+
+        public override string ToString()
+        {
+            if(_numero != -1)
             {
-                NaipeEnum.Paus => " ♣ ",
-                NaipeEnum.Espadas => " ♠ ",
-                NaipeEnum.Ouros => " ♦ ",
-                NaipeEnum.Copas => " ♥ ",
-                _ => ""
-            };
+                string numTexto = _numero switch
+                {
+                    1 => "A ",
+                    10 => "10",
+                    11 => "Q ",
+                    12 => "J ",
+                    13 => "K ",
+                    _ => _numero.ToString() + " ",
+                };
+
+                string naipeTexto = _naipe switch
+                {
+                    NaipeEnum.Paus => " ♣ ",
+                    NaipeEnum.Espadas => " ♠ ",
+                    NaipeEnum.Ouros => " ♦ ",
+                    NaipeEnum.Copas => " ♥ ",
+                    _ => ""
+                };
+
+                return "_______"
+                    + $"\n|{numTexto}{naipeTexto}|"
+                    + $"\n| {naipeTexto} |"
+                    + $"\n|{naipeTexto}{numTexto}|"
+                    + "\n-------\n";
+            }
+
 
             return "_______"
-                + $"\n|{numTexto}{naipeTexto}|"
-                + $"\n| {naipeTexto} |"
-                + $"\n|{naipeTexto}{numTexto}|"
+                + $"\n|x x x|"
+                + $"\n|x x x|"
+                + $"\n|x x x|"
                 + "\n-------\n";
+
         }
 
         public bool CompararCartas(Carta? carta)
