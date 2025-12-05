@@ -1,35 +1,23 @@
 ﻿using System;
 using System.Runtime;
+using System.Text;
 
 namespace Rouba_Monte.Classes
 {
     internal class RoubaMonte
     {
-        // INFO: Rebeca e Daniel, vou deixar algumas regions pra organizar o código.
-        // INFO: Quando formos entregar nós removemos
-
-        // TODO: Implementar lógica do jogo
-
-        #region Inicialização do jogo
-        // TODO: Implementar uma lista duplamente encadeada para gerenciar as rodadas
         private LinkedList<Jogador> _jogadores;
         private List<Carta> _cartas;
-        public LinkedList<Jogador> Jogadores { get => _jogadores; set => _jogadores = value; }
-        #endregion
 
-        #region Gestão do jogo
         public Carta CartaDaVez { get; set; }
         public Jogador JogadorAtual {  get; set; }
         public Stack<Carta> MonteDeCompra {  get; set; }
         public List<Carta> AreaDeDescarte { get; set; }
         public bool Finalizado { get; set; }
-        #endregion
 
         public RoubaMonte(List<Jogador> jogadores, int numCartas)
         {
-            // TODO: Implementar uma lista duplamente encadeada para gerenciar as rodadas
             _jogadores = new LinkedList<Jogador>(jogadores);
-            Jogadores = _jogadores;
 
             JogadorAtual = _jogadores.First();
             _cartas = new List<Carta>();
@@ -43,11 +31,14 @@ namespace Rouba_Monte.Classes
                 _cartas.AddRange(baralho.Cartas);
             }
 
-            // TODO: Adicionar log da criação
+            Console.WriteLine($"O baralho foi criado com {_cartas.Count} cartas");
+            Console.WriteLine(
+                $"Jogadores da partida: " +
+                $"{String.Join(",", _jogadores.Select(jogador => jogador.Nome))}");
 
-            // INFO Populando montes
             MonteDeCompra = new Stack<Carta>(_cartas.Slice(0, numCartas));
             AreaDeDescarte = new List<Carta>();
+            CartaDaVez = new Carta(2, NaipeEnum.Espadas);
         }
 
         public void Jogar()
@@ -67,7 +58,6 @@ namespace Rouba_Monte.Classes
 
             CartaDaVez = MonteDeCompra.Pop();
 
-
             Imprimir();
 
             if (RoubarMaiorMonteJogador())
@@ -79,8 +69,8 @@ namespace Rouba_Monte.Classes
 
             AreaDeDescarte.Add(CartaDaVez);
             JogadorAtual = ObterProximoJogador();
-            Finalizado = MonteDeCompra.Count == 0;
-            Console.WriteLine($"É a vez de {JogadorAtual.Nome}");
+            Console.WriteLine($"\nÉ a vez de {JogadorAtual.Nome}\n");
+            
         }
 
         private bool RoubarCartaDaVez()
@@ -88,7 +78,7 @@ namespace Rouba_Monte.Classes
             if (CartaDaVez.CompararCartas(JogadorAtual.OlharTopoDoMonte()))
             {
                 JogadorAtual.Monte.Push(CartaDaVez);
-                Console.WriteLine($"{JogadorAtual.Nome} rouba a carta da vez!");
+                Console.WriteLine($"\n{JogadorAtual.Nome} rouba a carta da vez!\n");
 
                 return true;
             }
@@ -106,7 +96,7 @@ namespace Rouba_Monte.Classes
                     JogadorAtual.Monte.Push(carta);
                     JogadorAtual.Monte.Push(CartaDaVez);
 
-                    Console.WriteLine($"{JogadorAtual.Nome} rouba uma carta da área de descarte!");
+                    Console.WriteLine($"\n{JogadorAtual.Nome} rouba o {CartaDaVez.Nome()} da área de descarte!\n");
                     return true;
                 }
             }
@@ -117,7 +107,7 @@ namespace Rouba_Monte.Classes
         private bool RoubarMaiorMonteJogador()
         {
             Dictionary<Jogador, int> jogadoresRoubaveis = new Dictionary<Jogador, int>();
-            foreach (Jogador jogador in Jogadores)
+            foreach (Jogador jogador in _jogadores)
             {
                 if (jogador != JogadorAtual)
                 {
@@ -148,24 +138,17 @@ namespace Rouba_Monte.Classes
 
         public void Imprimir()
         {
-            Console.WriteLine($"Vez de {JogadorAtual.Nome}");
-            Console.WriteLine("\n");
             Console.WriteLine("Carta da vez:");
             Console.WriteLine(CartaDaVez);
-            Console.WriteLine("\n");
+            Console.WriteLine("_____________________________\n");
             Console.WriteLine("Area de Descarte");
-            foreach (Carta carta in AreaDeDescarte)
-            {
-                Console.WriteLine(carta);
-            }
-
+            Console.WriteLine(CartaUtils.CardListToString(AreaDeDescarte));
             Console.WriteLine("");
             Console.WriteLine("Montes:\n");
-            foreach (Jogador jogador in _jogadores)
-            {
-                Console.WriteLine($"Monte de {jogador.Nome}\n" + jogador.OlharTopoDoMonte() + (jogador.Monte.Count > 0 ? $" + {jogador.Monte.Count} cartas" : " 0 cartas\n\n"));
-            }
+            Console.WriteLine(CartaUtils.ImprimirMontesDosJogadores(_jogadores));
         }
+
+
 
         private Jogador ObterProximoJogador()
         {
