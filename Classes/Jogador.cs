@@ -64,6 +64,7 @@ namespace Rouba_Monte.Classes
                 this.Monte.Push(aux.Pop());
             }
             Console.WriteLine(this.Nome + " rouba o monte de " + jogador.Nome);
+            Log.Escrever($"{this.Nome} roubou o monte de {jogador.Nome} ({this.Monte.Count} cartas após o roubo)");
         }
     }
 }

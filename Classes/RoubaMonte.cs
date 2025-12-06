@@ -36,7 +36,16 @@ namespace Rouba_Monte.Classes
                 $"Jogadores da partida: " +
                 $"{String.Join(",", _jogadores.Select(jogador => jogador.Nome))}");
 
+            Log.Iniciar(@"C:\Users\danie\OneDrive\Documentos\teste.txt");
+
             MonteDeCompra = new Stack<Carta>(_cartas.Slice(0, numCartas));
+
+            Log.Escrever($"O baralho foi criado com {_cartas.Count} cartas.");
+            Log.Escrever($"Jogadores da partida: {string.Join(", ", _jogadores.Select(j => j.Nome))}");
+            Log.Escrever($"Quantidade usada no jogo: {numCartas} cartas.");
+            Log.Escrever($"Monte de compra criado com {MonteDeCompra.Count} cartas.");
+            Log.Escrever("---------------------------------------------");
+
             AreaDeDescarte = new List<Carta>();
             CartaDaVez = new Carta(2, NaipeEnum.Espadas);
         }
@@ -53,10 +62,18 @@ namespace Rouba_Monte.Classes
                 Console.WriteLine("-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-\n");
 
                 vencedor.QuantidadeCartas = vencedor.Monte.Count;
+
+                Log.Escrever($"Jogo finalizado! Vencedor: {vencedor.Nome} com {vencedor.Monte.Count} cartas.");
+                Log.Encerrar();
+
                 return;
             }
 
+            Log.Escrever($"----- Rodada: Jogador atual é {JogadorAtual.Nome} -----");
+
             CartaDaVez = MonteDeCompra.Pop();
+
+            Log.Escrever($"{JogadorAtual.Nome} retirou a carta {CartaDaVez.Nome()} do monte de compra.");
 
             Imprimir();
 
@@ -68,7 +85,11 @@ namespace Rouba_Monte.Classes
                 return;
 
             AreaDeDescarte.Add(CartaDaVez);
+            Log.Escrever($"{JogadorAtual.Nome} descartou {CartaDaVez.Nome()}");
+
             JogadorAtual = ObterProximoJogador();
+            Log.Escrever($"Próximo jogador: {JogadorAtual.Nome}");
+
             Console.WriteLine($"\nÉ a vez de {JogadorAtual.Nome}\n");
             
         }
@@ -80,6 +101,7 @@ namespace Rouba_Monte.Classes
                 JogadorAtual.Monte.Push(CartaDaVez);
                 Console.WriteLine($"\n{JogadorAtual.Nome} rouba a carta da vez!\n");
 
+                Log.Escrever($"{JogadorAtual.Nome} roubou a carta da vez: {CartaDaVez.Nome()}");
                 return true;
             }
 
@@ -95,6 +117,8 @@ namespace Rouba_Monte.Classes
                     AreaDeDescarte.Remove(carta);
                     JogadorAtual.Monte.Push(carta);
                     JogadorAtual.Monte.Push(CartaDaVez);
+
+                    Log.Escrever($"{JogadorAtual.Nome} roubou {carta.Nome()} + {CartaDaVez.Nome()} da área de descarte");
 
                     Console.WriteLine($"\n{JogadorAtual.Nome} rouba o {CartaDaVez.Nome()} da área de descarte!\n");
                     return true;
@@ -122,14 +146,14 @@ namespace Rouba_Monte.Classes
             {
                 JogadorAtual.RoubarMonte(jogadoresRoubaveis.Keys.FirstOrDefault());
                 return true;
-            } 
+            }
             else if(jogadoresRoubaveis.Count > 1) 
             {
                 JogadorAtual.RoubarMonte(
                     jogadoresRoubaveis.Keys.FirstOrDefault(
-                        jogador => jogador.Monte.Count == jogadoresRoubaveis.Values.Max()
+                    jogador => jogador.Monte.Count == jogadoresRoubaveis.Values.Max()
                         )
-                    );
+                );
                 return true;
             }
 
