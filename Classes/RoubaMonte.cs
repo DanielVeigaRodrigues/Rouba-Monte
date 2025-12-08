@@ -36,7 +36,7 @@ namespace Rouba_Monte.Classes
                 $"Jogadores da partida: " +
                 $"{String.Join(",", _jogadores.Select(jogador => jogador.Nome))}");
 
-            Log.Iniciar(@"C:\Users\danie\OneDrive\Documentos\teste.txt");
+            Log.Iniciar("logs.txt");
 
             MonteDeCompra = new Stack<Carta>(_cartas.Slice(0, numCartas));
 
