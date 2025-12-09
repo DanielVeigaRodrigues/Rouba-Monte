@@ -15,11 +15,18 @@ namespace Rouba_Monte.Classes
         public List<Carta> AreaDeDescarte { get; set; }
         public bool Finalizado { get; set; }
 
-        public RoubaMonte(List<Jogador> jogadores, int numCartas)
+        public RoubaMonte(List<Jogador> jogadores, int numCartas, string jogadorInicial)
         {
+            foreach(Jogador jogador in jogadores)
+            {
+                jogador.Monte = new Stack<Carta>();
+                jogador.QuantidadeCartas = 0;
+                jogador.Posicao = 0;
+            }
+
             _jogadores = new LinkedList<Jogador>(jogadores);
 
-            JogadorAtual = _jogadores.First();
+            JogadorAtual = _jogadores.First(p => p.Nome == jogadorInicial);
             _cartas = new List<Carta>();
 
             int numBaralhos = (int)Math.Ceiling(numCartas/52.0);
@@ -56,14 +63,28 @@ namespace Rouba_Monte.Classes
 
             if (Finalizado)
             {
-                Jogador vencedor = _jogadores.FirstOrDefault(jogador => jogador.Monte.Count == _jogadores.Max(p => p.Monte.Count));
+                List<Jogador> jogadoresOrdenados = _jogadores.OrderByDescending(p => p.Monte.Count).ToList();
+
+                Jogador vencedor = jogadoresOrdenados.First();
                 Console.WriteLine("\n-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-");
                 Console.WriteLine($"{vencedor.Nome} venceu o jogo!");
                 Console.WriteLine("-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-\n");
 
-                vencedor.QuantidadeCartas = vencedor.Monte.Count;
-
                 Log.Escrever($"Jogo finalizado! Vencedor: {vencedor.Nome} com {vencedor.Monte.Count} cartas.");
+
+                int posicao = 1;
+                foreach(Jogador jog in jogadoresOrdenados)
+                {
+                    jog.FinalizarPartida(posicao);
+                    posicao++;
+                }
+
+                foreach (Jogador jog in jogadoresOrdenados)
+                {
+                    Console.WriteLine($"{jog.Posicao}º - {jog.Nome} - {jog.QuantidadeCartas}\n");
+                    Log.Escrever($"{jog.Posicao}º - {jog.Nome} - {jog.QuantidadeCartas}\n");
+                }
+
                 Log.Encerrar();
 
                 return;
@@ -118,9 +139,9 @@ namespace Rouba_Monte.Classes
                     JogadorAtual.Monte.Push(carta);
                     JogadorAtual.Monte.Push(CartaDaVez);
 
-                    Log.Escrever($"{JogadorAtual.Nome} roubou {carta.Nome()} + {CartaDaVez.Nome()} da área de descarte");
+                    Log.Escrever($"{JogadorAtual.Nome} roubou {carta.Nome()} e o {CartaDaVez.Nome()} da área de descarte!");
 
-                    Console.WriteLine($"\n{JogadorAtual.Nome} rouba o {CartaDaVez.Nome()} da área de descarte!\n");
+                    Console.WriteLine($"\n{JogadorAtual.Nome} rouba o {carta.Nome()} e o {CartaDaVez.Nome()} da área de descarte!\n");
                     return true;
                 }
             }

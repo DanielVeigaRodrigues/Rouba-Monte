@@ -14,7 +14,7 @@ public static class Log
     {
         _writer = new StreamWriter(nomeArquivo, append: true);
         _writer.AutoFlush = true;
-        Escrever($"Log iniciado em {DateTime.Now}");
+        Escrever($"Jogo iniciado em {DateTime.Now}");
         Escrever("---------------------------------------------");
     }
 
@@ -22,7 +22,7 @@ public static class Log
     public static void Encerrar()
     {
         Escrever("---------------------------------------------");
-        Escrever($"Log finalizado em {DateTime.Now}");
+        Escrever($"Jogo finalizado em {DateTime.Now}");
         _writer?.Close();
         _writer = null;
     }

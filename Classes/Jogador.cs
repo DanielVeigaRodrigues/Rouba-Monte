@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Rouba_Monte.Classes
 {
@@ -65,6 +66,32 @@ namespace Rouba_Monte.Classes
             }
             Console.WriteLine(this.Nome + " rouba o monte de " + jogador.Nome);
             Log.Escrever($"{this.Nome} roubou o monte de {jogador.Nome} ({this.Monte.Count} cartas após o roubo)");
+        }
+
+        public void FinalizarPartida(int posicao)
+        {
+            _quantidadeCartas = Monte.Count;
+            if(_posicoes.Count >= 5)
+            {
+                _posicoes.Dequeue();
+            }
+            _posicoes.Enqueue(posicao);
+            _posicao = posicao;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(
+             $"Histórico de {_nome}\n");
+
+            Queue<int> filaCopia = new Queue<int>(Posicoes);
+            while (filaCopia.Count > 0)
+            {
+                stringBuilder.Append(filaCopia.Dequeue() + "º Lugar\n");
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }
