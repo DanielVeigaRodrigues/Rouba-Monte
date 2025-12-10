@@ -14,8 +14,6 @@ namespace Rouba_Monte.Classes
         public int Posicao { get => _posicao; set => _posicao = value; }
         public int QuantidadeCartas { get => _quantidadeCartas; set => _quantidadeCartas = value; }
         public Queue<int> Posicoes { get => _posicoes; set => _posicoes = value; }
-
-        // INFO: atributo para gestão do jogo
         public Stack<Carta> Monte { get; set; }
 
         public Jogador(string nome)

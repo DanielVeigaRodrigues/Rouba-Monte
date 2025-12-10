@@ -87,7 +87,6 @@ namespace Rouba_Monte.Classes
 
         public bool CompararCartas(Carta? carta)
         {
-            // INFO: Igualdade simples no primeiro momento
             if(carta == null) {  return false; }
             return carta.Numero == _numero;
         }
